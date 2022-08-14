@@ -1,6 +1,8 @@
 '''   
-Module made to detect and handle outliers using methods like Z score and IQR.
+Module made for quick UNIVARIATE analysis.
+Contains functions to detect and handle outliers using methods like Z score and IQR.
 Outlier handling methods include removing and compressing. 
+
 Available functions:
     five_point_summary: Function to print five point summary of a feature.
     outliers_z_score: Function to analyse a feature using Z score.
