@@ -1,15 +1,15 @@
 '''   
 Module made for quick UNIVARIATE analysis.
-Contains functions to detect and handle outliers using methods like Z score and IQR.
+Detect and handle outliers using methods like Z score and IQR.
 Outlier handling methods include removing and compressing. 
 
 Available functions:
-    five_point_summary: Function to print five point summary of a feature.
-    outliers_z_score: Function to analyse a feature using Z score.
-    outliers_IQR: Function to analyse a feature using IQR.
-    analysis_quant: Function to analyse quantative features.
-    analysis_cate: Function to analyse categorical features.
-    handle_outliers: Function to handle outliers.
+    five_point_summary: Prints five point summary of a feature.
+    outliers_z_score: Analyse outliers using Z score.
+    outliers_IQR: Analyse outliers using IQR.
+    analysis_quant: Analyse quantative features.
+    analysis_cate: Analyse categorical features.
+    handle_outliers: Handle outliers.
 
 '''
 
@@ -20,7 +20,7 @@ import seaborn as sns
 
 def five_point_summary(df, columns):
     '''
-    Function to print five point summary of a feature.
+    Prints five point summary of a feature.
     
     Parameters:
         df: a pandas dataframe
@@ -45,7 +45,7 @@ def five_point_summary(df, columns):
 #############################################################################################
 def outliers_z_score(df, columns, mode='print'):
     '''
-    Function to analyse a feature using Z score.
+    Analyse outliers using Z score.
     
     Parameters:
         df: a pandas dataframe
@@ -55,8 +55,8 @@ def outliers_z_score(df, columns, mode='print'):
               }
 
     Returns: 
-        ('upper', 'lower', 'outliers_with_z') when set to 'return'
-        None when set to 'print'
+        ('upper', 'lower', 'outliers_with_z') when mode='return'
+        None when mode='print'
         
     '''
     
@@ -106,7 +106,7 @@ def outliers_z_score(df, columns, mode='print'):
 #############################################################################################
 def outliers_IQR(df, columns, mode='print'):
     '''
-    Function to analyse a feature using IQR.
+    Analyse outliers using IQR.
     
     Parameters:
         df: a pandas dataframe
@@ -160,15 +160,17 @@ def outliers_IQR(df, columns, mode='print'):
             print('---------------------------------')
     
 ####################################################################################
-def analysis_quant(df, columns):
+def analysis_quant(df, columns, figsize=(20,7), dpi=120):
     '''
-    Function to analyse quantative features.
+    Analyse quantative features.
     Prints five point summary and outliers via Z score and IQR. 
     Plots boxplot and histogram to visualise outliers.
     
     Parameters:
         df: a pandas dataframe
         columns: list of column names
+        figsize: default(20,7) set figure size
+        dpi: default(120) set figure dpi
     
     Returns: 
         None
@@ -196,7 +198,7 @@ def analysis_quant(df, columns):
         outliers_IQR(df, column)      
 
         ###PLOTTING###
-        fig, axes = plt.subplots(1, 2, sharex=True, figsize=(25,7),dpi=100)
+        fig, axes = plt.subplots(1, 2, sharex=True, figsize=figsize, dpi=dpi)
         # boxplot
         sns.boxplot(ax=axes[0] , x=feature)  
         # histogram
@@ -206,15 +208,17 @@ def analysis_quant(df, columns):
         print('_____________________________________________________________________________________________________________________')
         
 ##############################################################################################################
-def analysis_cate(df, columns):    
+def analysis_cate(df, columns, figsize=(20,7), dpi=120):    
     '''
-    Function to analyse categorical features.
+    Analyse categorical features.
     Prints unique values and their counts. 
     Plots barplot and pie chart.
     
     Parameters:
         df: a pandas dataframe
         columns: list of column names
+        figsize: default(20,7) set figure size
+        dpi: default(120) set figure dpi
     
     Returns: 
         None
@@ -239,7 +243,7 @@ def analysis_cate(df, columns):
         print()
 
         ###PLOTTING###
-        fig, axes =  plt.subplots(1, 2, figsize=(25,5),dpi=100)
+        fig, axes =  plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         # barplot
         sns.barplot(x=values.index, y=values, ax=axes[0])
         axes[0].set_ylabel('count')
@@ -252,18 +256,19 @@ def analysis_cate(df, columns):
 ######################################################################################################
 def handle_outliers(df, columns, using='Z', action='compress'):
     '''
-    Function to handle outliers.
-    Remove or compresses outliers from dataframe(inplace) by using either
-    Z score or IQR. Prints the removed/compressed values.
+    Handle outliers.
+    Remove or compress outliers from dataframe(inplace) by using
+    either Z score or IQR. Prints the removed/compressed values.
 
     Parameters:
         df: a pandas dataframe
-        columns: list of column names from which outliers are to be removed
+        columns: list of column names from which outliers are to be
+                 handled
         using: {'Z': Z score,
                 'IQR': Inter quartile range
                 }
-        action: {'compress': compresses the outliers to the extreme values
-                  using the chosen method
+        action: {'compress': compresses the outliers to the extreme 
+                             values using the chosen method
                  'remove': removes the outliers using the chosen method
                 }
 
