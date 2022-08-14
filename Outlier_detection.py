@@ -11,6 +11,11 @@ Available functions:
 
 '''
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 def five_point_summary(df, columns):
     '''
     Function to print five point summary of a feature.
