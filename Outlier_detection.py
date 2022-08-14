@@ -100,7 +100,10 @@ def outliers_z_score(df, columns, mode='print'):
             print('Outlier limits:\nlower limit:', lower, '\nupper limit:', upper)
             print()
             print('Total outliers:', outliers_with_z.shape[0] )
-            print( outliers_with_z )
+            
+            if outliers_with_z.shape[0]!=0:
+                print( outliers_with_z )
+                
             print('---------------------------------')
             
 #############################################################################################
@@ -155,8 +158,11 @@ def outliers_IQR(df, columns, mode='print'):
             print( 'OUTLIERS in '+ column +' via IQR\n' )
             print('Outlier limits:\nlower limit:',lower,'\nupper limit:',upper)            
             print()
-            print('Total outliers:',outliers_with_IQR.shape[0] )
-            print( outliers_with_IQR )
+            print('Total outliers:', outliers_with_IQR.shape[0] )
+            
+            if outliers_with_IQR.shape[0]!=0:
+                print( outliers_with_IQR )
+                
             print('---------------------------------')
     
 ####################################################################################
