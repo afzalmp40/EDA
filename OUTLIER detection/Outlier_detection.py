@@ -18,13 +18,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def five_point_summary(df, columns):
+def five_point_summary(df, columns='all_the_columns'):
     '''
     Prints five point summary of a feature.
     
     Parameters:
         df: a pandas dataframe
-        columns: list of column names
+        
+        columns: default('all_the_columns') list of column names.
+                 (if list of columns is not passed then
+                 all columns are analysed)
     
     Returns: 
         None
@@ -33,7 +36,12 @@ def five_point_summary(df, columns):
     
     # converting singular value of str to list 
     if type(columns)==str:
-        columns=[columns]
+        # if list of columns is not passed then all columns are analysed
+        if columns=='all_the_columns':
+            columns=df.columns
+        # else the passed string is converted to a list
+        else:
+            columns=[columns]
     
     for column in columns:
         print('5 point summary for:', column)
@@ -43,26 +51,36 @@ def five_point_summary(df, columns):
         print('---------------------------------')
         
 #############################################################################################
-def outliers_z_score(df, columns, mode='print'):
+def outliers_z_score(df, columns='all_the_columns', mode='print'):
     '''
     Analyse outliers using Z score.
     
     Parameters:
         df: a pandas dataframe
-        columns: list of column names
+        
+        columns: default('all_the_columns') list of column names.
+                 (if list of columns is not passed then
+                 all columns are analysed)
+                 
         mode: {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
 
     Returns: 
         ('upper', 'lower', 'outliers_with_z') when mode='return'
+        
         None when mode='print'
         
     '''
     
-    # converting singular value of str to list
+    # converting singular value of str to list 
     if type(columns)==str:
-        columns=[columns]
+        # if list of columns is not passed then all columns are analysed
+        if columns=='all_the_columns':
+            columns=df.columns
+        # else the passed string is converted to a list
+        else:
+            columns=[columns]
         
     for column in columns:
         
@@ -103,17 +121,20 @@ def outliers_z_score(df, columns, mode='print'):
             
             if outliers_with_z.shape[0]!=0:
                 print( outliers_with_z )
-                
-            print('---------------------------------')
+                print('---------------------------------')
             
 #############################################################################################
-def outliers_IQR(df, columns, mode='print'):
+def outliers_IQR(df, columns='all_the_columns', mode='print'):
     '''
     Analyse outliers using IQR.
     
     Parameters:
         df: a pandas dataframe
-        columns: list of column names
+        
+        columns: default('all_the_columns') list of column names.
+                 (if list of columns is not passed then
+                 all columns are analysed)
+                 
         mode: {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
@@ -124,9 +145,14 @@ def outliers_IQR(df, columns, mode='print'):
         
     '''
     
-    # converting singular value of str to list
+    # converting singular value of str to list 
     if type(columns)==str:
-        columns=[columns]
+        # if list of columns is not passed then all columns are analysed
+        if columns=='all_the_columns':
+            columns=df.columns
+        # else the passed string is converted to a list
+        else:
+            columns=[columns]
         
     for column in columns:
         
@@ -162,11 +188,10 @@ def outliers_IQR(df, columns, mode='print'):
             
             if outliers_with_IQR.shape[0]!=0:
                 print( outliers_with_IQR )
-                
-            print('---------------------------------')
+                print('---------------------------------')
     
 ####################################################################################
-def analysis_quant(df, columns, figsize=(20,7), dpi=120):
+def analysis_quant(df, columns='all_the_columns', figsize=(20,7), dpi=120):
     '''
     Analyse quantative features.
     Prints five point summary and outliers via Z score and IQR. 
@@ -174,8 +199,13 @@ def analysis_quant(df, columns, figsize=(20,7), dpi=120):
     
     Parameters:
         df: a pandas dataframe
-        columns: list of column names
+        
+        columns: default('all_the_columns') list of column names.
+                 (if list of columns is not passed then
+                 all columns are analysed)
+                 
         figsize: default(20,7) set figure size
+        
         dpi: default(120) set figure dpi
     
     Returns: 
@@ -183,9 +213,14 @@ def analysis_quant(df, columns, figsize=(20,7), dpi=120):
         
     '''
     
-    # converting singular value of str to list
+    # converting singular value of str to list 
     if type(columns)==str:
-        columns=[columns]
+        # if list of columns is not passed then all columns are analysed
+        if columns=='all_the_columns':
+            columns=df.columns
+        # else the passed string is converted to a list
+        else:
+            columns=[columns]
     
     for column in columns:
         
@@ -214,7 +249,7 @@ def analysis_quant(df, columns, figsize=(20,7), dpi=120):
         print('_____________________________________________________________________________________________________________________')
         
 ##############################################################################################################
-def analysis_cate(df, columns, figsize=(20,7), dpi=120):    
+def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120):    
     '''
     Analyse categorical features.
     Prints unique values and their counts. 
@@ -222,8 +257,13 @@ def analysis_cate(df, columns, figsize=(20,7), dpi=120):
     
     Parameters:
         df: a pandas dataframe
-        columns: list of column names
+        
+        columns: default('all_the_columns') list of column names.
+                 (if list of columns is not passed then
+                 all columns are analysed)
+                 
         figsize: default(20,7) set figure size
+        
         dpi: default(120) set figure dpi
     
     Returns: 
@@ -231,9 +271,14 @@ def analysis_cate(df, columns, figsize=(20,7), dpi=120):
         
     '''
     
-    # converting singular value of str to list
+    # converting singular value of str to list 
     if type(columns)==str:
-        columns=[columns]
+        # if list of columns is not passed then all columns are analysed
+        if columns=='all_the_columns':
+            columns=df.columns
+        # else the passed string is converted to a list
+        else:
+            columns=[columns]
     
     for column in columns:
         
@@ -274,11 +319,14 @@ def handle_outliers(df, columns, using='Z', action='compress'):
 
     Parameters:
         df: a pandas dataframe
+        
         columns: list of column names from which outliers are to be
                  handled
+                 
         using: {'Z': Z score,
                 'IQR': Inter quartile range
                 }
+                
         action: {'compress': compresses the outliers to the extreme 
                              values using the chosen method
                  'remove': removes the outliers using the chosen method
