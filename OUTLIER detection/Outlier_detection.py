@@ -346,12 +346,12 @@ def handle_outliers(df, columns, using='Z', action='compress'):
         # if IQR method is chosen
         if using.strip().upper()=='IQR':
             # calling 'outliers_z_score' function to retrieve limits, outliers
-            upper, lower, outliers = outliers_z_score(df, column, mode='return')
+            upper, lower, outliers = outliers_IQR(df, column, mode='return')
 
         # if Z score method is chosen
         if using.strip().upper()=='Z':
             # calling 'outliers_IQR' function to retrieve limits, outliers
-            upper, lower, outliers = outliers_IQR(df, column, mode='return')
+            upper, lower, outliers = outliers_z_score(df, column, mode='return')
             
         # if remove option is chosen
         if action=='remove':
