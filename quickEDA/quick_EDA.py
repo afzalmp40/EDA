@@ -418,12 +418,12 @@ def correlation(df, figsize=(15,10), dpi=100):
     # plotting pearson correlation heatmap
     pearson=df.corr()
     ax[0].set_title('pearson')
-    sns_heatmap(pearson, cmap='OrRd', square=True, annot=True, ax=ax[0])
+    sns_heatmap(pearson, cmap='RdBu', square=True, annot=True, vmin=-1, vmax=1, ax=ax[0])
 
     # plotting spearman correlation heatmap
     spearman=df.corr(method='spearman')
     ax[1].set_title('spearman')
-    sns_heatmap(spearman, cmap='OrRd', square=True, annot=True, ax=ax[1])
+    sns_heatmap(spearman, cmap='RdBu', square=True, annot=True, vmin=-1, vmax=1, ax=ax[1])
 
     plt_show()
     
