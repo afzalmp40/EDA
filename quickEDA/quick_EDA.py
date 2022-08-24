@@ -235,18 +235,23 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,7), dpi=120):
             columns=[columns]
     
     for column in columns:
-        
+
         # storing feature as series
         feature=df[column]
         
         print('\t\t\t\tANALYSIS OF:', column ,'\n')
         
+        if feature.dtype=='object':
+            print(f'Feature "{column}" might be categorical.\nPlease use "analysis_cate" function.')
+            print('___________________________________________________________________________________________________________')
+            continue
+
         # five point summary
         five_point_summary(df, column)   
-        
+
         # z score and outliers
         outliers_z_score(df, column)  
-        
+
         # iqr and outliers
         outliers_IQR(df, column)      
 
@@ -256,13 +261,14 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,7), dpi=120):
         sns_boxplot(ax=axes[0] , x=feature)  
         # histogram
         sns_histplot(ax=axes[1], data=feature, bins=25)    
-        
+
         plt_show()
-        print('_____________________________________________________________________________________________________________________')
+        print('___________________________________________________________________________________________________________')
+
         
 ##############################################################################################################
 
-def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120):    
+def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120, force=False):    
     '''
     Analyse categorical features.
     Prints unique values and their counts. 
@@ -279,6 +285,9 @@ def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120):
         
         dpi: default(120) set figure dpi
     
+        force: default(False) whether to proceed with a feature that
+               might be numerical( !!!MAY CAUSE MEMORY LEAK!!! ) 
+               
     Returns: 
         None
         
@@ -301,10 +310,13 @@ def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120):
         print('\t\t\t\tANALYSIS OF:', column ,'\n')
 
         # calculate no. of classes in the features and warn that feature might be numerical
-        if feature.nunique()>20:
-            print(f'The feature "{column}" might be numerical. Please try the "analysis_quant" function.')
-            print('_____________________________________________________________________________________________________________________')
-            continue
+        if force==False:
+            if feature.nunique()>20:
+                print(f'The feature "{column}" might be numerical. Please try the "analysis_quant" function.\nIncase you want to proceed anyways, set "force" parameter to True.\n(Caution!!! May cause memory leak.)')
+                print('______________________________________________________________________________________________________')
+                continue
+                
+        print(f'The feature "{column}" might be numerical. Proceeding anyways.')
         
         # calculate and print unique values and their counts
         values=feature.value_counts()
