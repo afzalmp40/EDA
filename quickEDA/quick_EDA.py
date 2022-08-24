@@ -1,7 +1,8 @@
 '''   
 Module made for quick EDA.
-Detect and handle outliers using methods like Z score and IQR.
-Outlier handling methods include removing and compressing. 
+-Detect and handle outliers using methods like Z score and IQR.
+-Outlier handling methods include removing and compressing. 
+-Plot correlation heatmap using "correlation" function.
 
 Available functions:
 
