@@ -1,1 +1,1 @@
-EDA on titanic dataset
+EDA and preprocessing on titanic dataset
