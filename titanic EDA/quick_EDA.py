@@ -132,7 +132,8 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
             
             if outliers_with_z.shape[0]!=0:
                 print( outliers_with_z )
-                print('---------------------------------')
+                
+            print('---------------------------------')
             
 #############################################################################################
 
@@ -200,7 +201,8 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
             
             if outliers_with_IQR.shape[0]!=0:
                 print( outliers_with_IQR )
-                print('---------------------------------')
+                
+            print('---------------------------------')
     
 ####################################################################################
 
