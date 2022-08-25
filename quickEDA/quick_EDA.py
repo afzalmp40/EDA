@@ -317,7 +317,8 @@ def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120, force=
                 print('______________________________________________________________________________________________________')
                 continue
                 
-        print(f'The feature "{column}" might be numerical. Proceeding anyways.')
+        if force==True:
+            print(f'The feature "{column}" might be numerical. Proceeding anyways.')
         
         # calculate and print unique values and their counts
         values=feature.value_counts()
