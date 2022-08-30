@@ -393,7 +393,7 @@ def handle_outliers(df, columns, using='Z', action='compress'):
         if action=='compress':
             df.loc[ df[column] > upper, column] = upper
             df.loc[ df[column] < lower, column] = lower
-            print('Compressed the following outliers:\n', outliers)
+            print(f'Compressed the following outliers in {column}:\n', outliers)
             
         print('_____________________________________________________________________________________________________________________')
         
