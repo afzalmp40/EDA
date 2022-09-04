@@ -206,7 +206,7 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
     
 ####################################################################################
 
-def analysis_quant(df, columns='all_the_columns', figsize=(20,7), dpi=120):
+def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
     '''
     Analyse quantative features.
     Prints five point summary and outliers via Z score and IQR. 
@@ -271,7 +271,7 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,7), dpi=120):
         
 ##############################################################################################################
 
-def analysis_cate(df, columns='all_the_columns', figsize=(20,7), dpi=120, force=False):    
+def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=False):    
     '''
     Analyse categorical features.
     Prints unique values and their counts. 
