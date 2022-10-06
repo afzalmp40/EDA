@@ -26,16 +26,9 @@ Available functions:
     ____________________________________________________________
 '''
 
-# from numpy import mean as np_mean ,std as np_std
-# from pandas import DataFrame as pd_DataFrame, concat as pd_concat
-# from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
-# from seaborn import histplot as sns_histplot, boxplot as sns_boxplot, barplot as sns_barplot, heatmap as sns_heatmap 
 
+##################################################################################
 
-
-#############################################################################################
-'''                                  UNIVARIATE ANALYSIS                                  '''
-#############################################################################################
 def garbage_cleaner():
     '''
     clears all variables in local namespace
@@ -52,9 +45,12 @@ def garbage_cleaner():
     from gc import collect
     collect()
     del(collect)
-    
-#############################################################################################
 
+    
+
+#############################################################################################
+'''                                  UNIVARIATE ANALYSIS                                  '''
+#############################################################################################
 
 
 def five_point_summary(df, columns='all_the_columns'):
@@ -160,7 +156,7 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
         outliers_with_z=pd_DataFrame( {
                                 'outliers' : feature[mask],
                                 'Z-score'  : Z[mask] 
-        })
+        }).sort_values(by='outliers')
         
         if mode=='return':
             return upper, lower, outliers_with_z
@@ -173,7 +169,12 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
             print('Total outliers:', outliers_with_z.shape[0] )
             
             if outliers_with_z.shape[0]!=0:
-                print( outliers_with_z )
+                
+                if len(outliers_with_z)>10:
+                    print(outliers_with_z[:5],'\n.\n.')
+                    print(outliers_with_z[-5:])
+                else:
+                    print(outliers_with_z)
                 
             print('---------------------------------')
             
@@ -205,6 +206,9 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
         
     ''' 
     
+    from pandas import DataFrame as pd_DataFrame
+    
+    
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -234,7 +238,7 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
         mask= (feature<lower) | (feature>upper)
         
         # filter and store feature using outlier limits
-        outliers_with_IQR= feature[mask]
+        outliers_with_IQR= feature[mask].sort_values()
         outliers_with_IQR.columns='outliers'
 
         if mode=='return':
@@ -247,7 +251,13 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
             print('Total outliers:', outliers_with_IQR.shape[0] )
             
             if outliers_with_IQR.shape[0]!=0:
-                print( outliers_with_IQR )
+                
+                if len(outliers_with_IQR)>10:
+                    outliers_with_IQR=pd_DataFrame(outliers_with_IQR)
+                    print(outliers_with_IQR[:5],'\n.\n.')
+                    print(outliers_with_IQR[-5:])
+                else:
+                    print(outliers_with_IQR)
                 
             print('---------------------------------')
     
@@ -460,7 +470,7 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
                 if lower==None: lower=df[column].min()
                 if upper==None: upper=df[column].max()
                 #making the outliers dataframe 
-                outliers= pd_concat( (df[df[column]<lower], df[df[column]>upper]) )[column]
+                outliers= pd_concat( (df[df[column]<lower], df[df[column]>upper]) )[column].sort_values()
             else:
                 using='Z'
                 print('Using the z score method as custom intervals were not provided')
@@ -474,8 +484,6 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
         if using.strip().upper()=='Z':
             # calling 'outliers_z_score' function to retrieve limits, outliers
             upper, lower, outliers = outliers_z_score(df, column, mode='return')
-            
-        outliers=outliers.sort_values()
         
         # if remove option is chosen
         if action=='remove':
