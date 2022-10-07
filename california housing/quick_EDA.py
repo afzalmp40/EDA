@@ -34,11 +34,6 @@ def garbage_cleaner():
     clears all variables in local namespace
     '''
     
-    # for i in locals().keys():
-    #     # if not i.startswith('_'):
-    #     #     exec('del ' + i)
-    #     exec('del ' + i)
-    
     keys=locals().keys()
     del(keys)
     
@@ -569,9 +564,9 @@ def correlation(df, figsize=(15,10), dpi=100):
 
 
 
-def multiplot(df, corr_method='pearson', height=1.5, dpi=120, aspect=1.5 ):    
+def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_color='darkcyan', alpha=0.5, height=1, dpi=150, aspect=1.5 ):    
     '''
-    plot multiple plots like correlation heatmap, pairwise scatterplot 
+    plot multiple plots like correlation(pearson) heatmap, pairwise scatterplot 
     and histogram in a single plot
     
     Parameters :
@@ -579,8 +574,20 @@ def multiplot(df, corr_method='pearson', height=1.5, dpi=120, aspect=1.5 ):
     df : Default(None)
         a pandas dataframe
     
-    corr_method : Default("pearson")    {"pearson", "spearman"}
-        Method used to calculate correlation
+    linewidth : default(2)
+        width of regression line
+        
+    line_color : default('blue')
+        color of regression line
+        
+    point_size : default(0.5)
+        size of scatter points
+        
+    point_color : default('darkcyan')
+        color of scatter points
+        
+    alpha : default(0.5)
+        transparency value for scatter points
     
     height : default(1)
         Height of figure
@@ -594,7 +601,7 @@ def multiplot(df, corr_method='pearson', height=1.5, dpi=120, aspect=1.5 ):
     returns : None
     '''
     
-    from seaborn import PairGrid as sns_pairgrid, histplot as sns_histplot, despine as sns_despine
+    from seaborn import PairGrid as sns_pairgrid, histplot as sns_histplot, despine as sns_despine, regplot as sns_regplot
     from matplotlib.pyplot import gca as plt_gca, scatter as  plt_scatter, Normalize as plt_normalize, get_cmap as plt_get_cmap, show as plt_show
     from scipy.stats import pearsonr 
     import matplotlib.style as style
@@ -617,7 +624,8 @@ def multiplot(df, corr_method='pearson', height=1.5, dpi=120, aspect=1.5 ):
     #df=fetch_california_housing(as_frame=True).frame #[['MedInc','HouseAge']]
 
     g = sns_pairgrid(df, height=height, aspect=aspect)
-    g.map_lower(plt_scatter, s=1)
+    #g.map_lower(plt_scatter, s=1)
+    g.map_lower(sns_regplot, ci=0, scatter_kws={'s':point_size, 'alpha':alpha, 'color':point_color}, line_kws={'linewidth':line_width, 'color':line_color})
     g.map_diag(sns_histplot, kde=False)
     g.map_upper(corrfunc, norm=plt_normalize(vmin=-.5, vmax=.5), cmap=plt_get_cmap('RdBu'))
     g.fig.subplots_adjust(wspace=0.06, hspace=0.06) # equal spacing in both directions
