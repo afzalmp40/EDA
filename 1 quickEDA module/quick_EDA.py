@@ -7,28 +7,28 @@ Module made for quick EDA.
 Available functions:
 
     UNIVARIATE ANALYSIS:
-    ----------------------
+    --------------------
     five_point_summary: Prints five point summary of a feature.
     outliers_z_score: Analyse outliers using Z score.
     outliers_IQR: Analyse outliers using IQR.
     analysis_quant: Analyse quantative features.
     analysis_cate: Analyse categorical features.
     handle_outliers: Handle outliers.
+    ______________________________________________________________
     
-    ____________________________________________________________
 
     BIVARIATE ANALYSIS:
-    ----------------------
+    -------------------
     correlation: Plot correlation heatmap for a dataframe.
-    multiplot: plot multiple plots like correlation heatmap,
+    multiplot: Plot multiple plots like correlation heatmap,
                pairwise scatterplot and histogram in single plot.
-               
-    ____________________________________________________________
+    mutual_info: Plot mutual info of features with respect to the target.
+    ______________________________________________________________
 '''
 
 
-##################################################################################
 
+############################################
 def garbage_cleaner():
     '''
     clears all variables in local namespace
@@ -39,8 +39,9 @@ def garbage_cleaner():
     
     from gc import collect
     collect()
-    del(collect)
-
+    del(collect)   
+############################################
+    
     
 
 #############################################################################################
@@ -52,8 +53,8 @@ def five_point_summary(df, columns='all_the_columns'):
     '''
     Prints five point summary of a feature.
     
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: 
             a pandas dataframe
         
@@ -61,12 +62,13 @@ def five_point_summary(df, columns='all_the_columns'):
             list of column names.
             (if list of columns is not passed then
             all columns are analysed)
-    ________________
-    Returns: 
-        None
-        
+            
+    ________________________________
+    Returns : 
+    ---------
+        None 
     '''
-    
+
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -75,14 +77,14 @@ def five_point_summary(df, columns='all_the_columns'):
         # else the passed string is converted to a list
         else:
             columns=[columns]
-    
+
     for column in columns:
         print('5 point summary for:', column)
-        
+
         # extracting and printing the five point summary from describe function
         print(df[[column]].describe().iloc[3:] )
         print('---------------------------------')
-        
+    
     garbage_cleaner()
     
 #############################################################################################
@@ -93,8 +95,8 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
     '''
     Analyse outliers using Z score.
     
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: 
             a pandas dataframe
         
@@ -106,17 +108,18 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
         mode: {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
-    ________________
-    Returns: 
-        ('upper', 'lower', 'outliers_with_z') when mode='return'
+              
+    ________________________________
+    Returns : 
+    ---------
+        mode='return' ==> ('upper', 'lower', 'outliers_with_z')
         
-        None when mode='print'
-        
+        mode='print' ==> None
     '''
     
     from numpy import mean as np_mean ,std as np_std
     from pandas import DataFrame as pd_DataFrame
-    
+
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -125,52 +128,52 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
         # else the passed string is converted to a list
         else:
             columns=[columns]
-        
+
     for column in columns:
-        
+
         ###CALCULATIONS###
-        
+
         # storing the feature as a series 
         feature=df[column]
-        
+
         # calculate mean and stdev
         mean = np_mean(feature)
         stdev = np_std(feature)
-        
+
         # calculate outlier limits via Z score
         lower= -3*stdev + mean
         upper=  3*stdev + mean
-        
+
         # calculating Z score for features
         Z=(feature-mean)/stdev
-        
+
         # creating a mask to subset only outlier values( abs(z) > 3 )
         mask=abs( Z )>3
-        
+
         # a dataframe storing the outliers and their z scores
         outliers_with_z=pd_DataFrame( {
                                 'outliers' : feature[mask],
                                 'Z-score'  : Z[mask] 
         }).sort_values(by='outliers')
-        
+
         if mode=='return':
             return upper, lower, outliers_with_z
-        
+
         else:
             ###PRINTING THE RESULTS###
             print( 'OUTLIERS in ' + column + ' via Z score\n' )
             print('Outlier limits:\nlower limit:', lower, '\nupper limit:', upper)
             print()
             print('Total outliers:', outliers_with_z.shape[0] )
-            
+
             if outliers_with_z.shape[0]!=0:
-                
+
                 if len(outliers_with_z)>10:
                     print(outliers_with_z[:5],'\n.\n.')
                     print(outliers_with_z[-5:])
                 else:
                     print(outliers_with_z)
-                
+
             print('---------------------------------')
             
     garbage_cleaner()
@@ -183,8 +186,8 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
     '''
     Analyse outliers using IQR.
     
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: a pandas dataframe
         
         columns: default('all_the_columns') list of column names.
@@ -194,16 +197,17 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
         mode: {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
-    ________________
-    Returns: 
-        ('upper', 'lower', 'outliers_with_IQR') when set to 'return'
-        None when set to 'print' 
-        
+              
+    ________________________________
+    Returns : 
+    ---------
+        mode='return' ==> ('upper', 'lower', 'outliers_with_IQR') 
+        mode='print' ==> None 
     ''' 
     
     from pandas import DataFrame as pd_DataFrame
-    
-    
+
+
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -212,13 +216,13 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
         # else the passed string is converted to a list
         else:
             columns=[columns]
-        
+
     for column in columns:
-        
+
         ###CALCULATIONS###
         # storing the feature as a series 
         feature=df[column]
-        
+
         # extracting quartile1, quartile3 from df.describe
         q1,q3=feature.describe().iloc[[4,6]]
 
@@ -231,7 +235,7 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
 
         #creating a mask for filtering
         mask= (feature<lower) | (feature>upper)
-        
+
         # filter and store feature using outlier limits
         outliers_with_IQR= feature[mask].sort_values()
         outliers_with_IQR.columns='outliers'
@@ -244,16 +248,16 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
             print('Outlier limits:\nlower limit:',lower,'\nupper limit:',upper)            
             print()
             print('Total outliers:', outliers_with_IQR.shape[0] )
-            
+
             if outliers_with_IQR.shape[0]!=0:
-                
+
                 if len(outliers_with_IQR)>10:
                     outliers_with_IQR=pd_DataFrame(outliers_with_IQR)
                     print(outliers_with_IQR[:5],'\n.\n.')
                     print(outliers_with_IQR[-5:])
                 else:
                     print(outliers_with_IQR)
-                
+
             print('---------------------------------')
     
     garbage_cleaner()
@@ -268,8 +272,8 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
     Prints five point summary and outliers via Z score and IQR. 
     Plots boxplot and histogram to visualise outliers.
     
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: a pandas dataframe
         
         columns: default('all_the_columns') list of column names.
@@ -279,15 +283,16 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
         figsize: default(20,7) set figure size
         
         dpi: default(120) set figure dpi
-    ________________
-    Returns: 
-        None
         
+    ________________________________
+    Returns : 
+    ---------
+        None
     '''
 
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
     from seaborn import histplot as sns_histplot, boxplot as sns_boxplot
-    
+
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -296,14 +301,14 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
         # else the passed string is converted to a list
         else:
             columns=[columns]
-    
+
     for column in columns:
 
         # storing feature as series
         feature=df[column]
-        
+
         print('\t\t\t\tANALYSIS OF:', column ,'\n')
-        
+
         if feature.dtype=='object':
             print(f'Feature "{column}" might be categorical.\nPlease use "analysis_cate" function.')
             print('___________________________________________________________________________________________________________')
@@ -327,7 +332,7 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
 
         plt_show()
         print('___________________________________________________________________________________________________________')
-    
+     
     garbage_cleaner()
     
 ##############################################################################################################
@@ -340,8 +345,8 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
     Prints unique values and their counts. 
     Plots barplot and pie chart.
     
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: a pandas dataframe
         
         columns: default('all_the_columns') list of column names.
@@ -353,16 +358,17 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         dpi: default(120) set figure dpi
     
         force: default(False) whether to proceed with a feature that
-               might be numerical( !!!MAY CAUSE MEMORY LEAK!!! ) 
-    ________________
-    Returns: 
-        None
-        
+               might be numerical( !!!MAY CAUSE MEMORY LEAK!!! )
+               
+    ________________________________
+    Returns : 
+    ---------
+        None 
     '''
     
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
     from seaborn import barplot as sns_barplot
-    
+
     # converting singular value of str to list 
     if type(columns)==str:
         # if list of columns is not passed then all columns are analysed
@@ -371,12 +377,12 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         # else the passed string is converted to a list
         else:
             columns=[columns]
-    
+
     for column in columns:
-        
+
         # storing feature as series
         feature=df[column]
-        
+
         print('\t\t\t\tANALYSIS OF:', column ,'\n')
 
         # calculate no. of classes in the features and warn that feature might be numerical
@@ -385,10 +391,10 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
                 print(f'The feature "{column}" might be numerical. Please try the "analysis_quant" function.\nIncase you want to proceed anyways, set "force" parameter to True.\n(Caution!!! May cause memory leak.)')
                 print('______________________________________________________________________________________________________')
                 continue
-                
+
         if force==True:
             print(f'The feature "{column}" might be numerical. Proceeding anyways.')
-        
+
         # calculate and print unique values and their counts
         values=feature.value_counts()
         print('No. of UNIQUE values:')
@@ -402,10 +408,10 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         axes[0].set_ylabel('count')
         # pie chart
         axes[1].pie(x=values, labels=values.index )
-        
+
         plt_show()
         print('_____________________________________________________________________________________________________________________')
-        
+     
     garbage_cleaner()
     
 ######################################################################################################
@@ -418,8 +424,8 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
     Remove or compress outliers from dataframe(inplace) by using
     either Z score or IQR. Prints the removed/compressed values.
 
-    Parameters:
-    ----------------
+    Parameters :
+    ------------
         df: a pandas dataframe
         
         columns: list of column names from which outliers are to be
@@ -441,23 +447,24 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
             Intervals using which outliers will be handled
             Provide custom intervals as a tuple in the format:
             (lower limit, upper limit)
-    ________________
-    Returns: 
+            
+    ________________________________
+    Returns : 
+    ---------
         None
-        
     '''
     
     from pandas import DataFrame as pd_DataFrame, concat as pd_concat
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
     from seaborn import histplot as sns_histplot 
-    
+
     # converting single value to list
     if type(columns)==str:
         columns=[columns]
-    
+
     for column in columns:
         before=df[column].copy()
-        
+
         if using.strip().upper()=='CUSTOM': 
             if custom_intervals != (None,None):
                 # setting lower and upper limit as the custom_interval 
@@ -469,7 +476,7 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
             else:
                 using='Z'
                 print('Using the z score method as custom intervals were not provided')
-            
+
         # if IQR method is chosen
         if using.strip().upper()=='IQR':
             # calling 'outliers_IQR_score' function to retrieve limits, outliers
@@ -479,7 +486,7 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
         if using.strip().upper()=='Z':
             # calling 'outliers_z_score' function to retrieve limits, outliers
             upper, lower, outliers = outliers_z_score(df, column, mode='return')
-        
+
         # if remove option is chosen
         if action=='remove':
             # dropping the outliers and printing them as removed
@@ -492,7 +499,7 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
             df.loc[ df[column] > upper, column] = upper
             df.loc[ df[column] < lower, column] = lower
             print(f'Compressed the following outliers in {column}:\n')
-            
+
         print('Total outliers:',len(outliers))
         if len(outliers)>10:
             outliers=pd_DataFrame(outliers)
@@ -500,11 +507,11 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
             print(outliers[-5:])
         else:
             print(outliers)
-            
+
         after=df[column]
         # plot the difference after handling outliers
         fig,ax=plt_subplots(1,2, figsize=(20,3), dpi=100)
-        
+
         #before.hist(bins=50, ax=ax[0])
         sns_histplot(ax=ax[0], data=before, bins=50) 
         ax[0].set_title(f'{column} before')
@@ -513,7 +520,7 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
         sns_histplot(ax=ax[1], data=after, bins=50) 
         ax[1].set_title(f'{column} after')
         plt_show()
-            
+
         print('_____________________________________________________________________________________________________________________')
 
     garbage_cleaner()
@@ -530,20 +537,26 @@ def correlation(df, figsize=(15,10), dpi=100):
     Plot correlation heatmap for a dataframe.
     Includes both pearson and spearman correlation.
     
-    Parameters:
-    ----------------
-        df: a pandas dataframe
-        figsize: default(15,10) set figure size
-        dpi: default(100) set figure dpi
-    ________________
-    Returns:
-        None
+    Parameters :
+    ------------
+        df : Default(None)
+            a pandas dataframe
+
+        figsize : default(15,10)
+            set figure size
+
+        dpi: default(100)
+            set figure dpi
         
+    ________________________________
+    Returns :
+    ---------
+        None 
     '''
     
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
     from seaborn import heatmap as sns_heatmap 
-    
+
     fig , ax= plt_subplots(1,2, figsize=figsize, dpi=dpi)
 
     # plotting pearson correlation heatmap
@@ -570,35 +583,38 @@ def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_col
     and histogram in a single plot
     
     Parameters :
-    ---------------
-    df : Default(None)
-        a pandas dataframe
-    
-    linewidth : default(2)
-        width of regression line
+    ------------
+        df : Default(None)
+            a pandas dataframe
+
+        linewidth : default(2)
+            width of regression line
+
+        line_color : default('blue')
+            color of regression line
+
+        point_size : default(0.5)
+            size of scatter points
+
+        point_color : default('darkcyan')
+            color of scatter points
+
+        alpha : default(0.5)
+            transparency value for scatter points
+
+        height : default(1)
+            Height of figure
+
+        dpi : default(100)
+            dpi of figure
+
+        aspect : default(1.5)
+            aspect ratio of figure
         
-    line_color : default('blue')
-        color of regression line
-        
-    point_size : default(0.5)
-        size of scatter points
-        
-    point_color : default('darkcyan')
-        color of scatter points
-        
-    alpha : default(0.5)
-        transparency value for scatter points
-    
-    height : default(1)
-        Height of figure
-        
-    dpi : default(100)
-        dpi of figure
-        
-    aspect : default(1.5)
-        aspect ratio of figure
-    _______________
-    returns : None
+    ________________________________
+    Returns :
+    ---------
+        None
     '''
     
     from seaborn import PairGrid as sns_pairgrid, histplot as sns_histplot, despine as sns_despine, regplot as sns_regplot
@@ -621,8 +637,6 @@ def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_col
                     color='white' if lightness < 0.7 else 'black', size=10, ha='center', va='center')
 
 
-    #df=fetch_california_housing(as_frame=True).frame #[['MedInc','HouseAge']]
-
     g = sns_pairgrid(df, height=height, aspect=aspect)
     #g.map_lower(plt_scatter, s=1)
     g.map_lower(sns_regplot, ci=0, scatter_kws={'s':point_size, 'alpha':alpha, 'color':point_color}, line_kws={'linewidth':line_width, 'color':line_color})
@@ -633,10 +647,65 @@ def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_col
     plt_show()
 
     style.use("seaborn-darkgrid")
-    #del(sns_pairgrid,sns_histplot,sns_despine,plt_gca,plt_scatter,plt_normalize,plt_get_cmap,plt_show,pearsonr,style)
-    
+        
     garbage_cleaner()
     
 ###################################################################################################################
+
+
+
+def mutual_info(df, target, limit=10, figsize=(5, 3), dpi=150):
+    '''
+    Plot mutual info of features with respect to the target.
+    
+    Parameters :
+    ------------
+    df : Default(None)
+        pandas dataframe
+    
+    target : Default(None)
+        name of target column
+    
+    limit : Default(10)
+        limit number of features plotted
+    ________________________________
+    Returns :
+    ---------
+        None
+    '''
+    
+    from numpy import arange as np_arange
+    from pandas import Series as pd_series
+    from seaborn import barplot as sns_barplot
+    from matplotlib.pyplot import figure as plt_figure, yticks as plt_yticks, title as plt_title
+    from sklearn.feature_selection import mutual_info_regression
+
+
+    X = df.copy()
+    y = X.pop(target)
+
+    # Label encoding for categoricals
+    for colname in X.select_dtypes("object"):
+        X[colname], _ = X[colname].factorize()
+
+    # All discrete features should now have integer dtypes (double-check this before using MI!)
+    discrete_features = X.dtypes == int
+
+    mi_scores = mutual_info_regression(X, y, discrete_features=discrete_features)
+    mi_scores = pd_series(mi_scores, name="MI Scores", index=X.columns)
+    mi_scores = mi_scores.sort_values(ascending=False)[:limit]
+
+    width = np_arange(len(mi_scores))
+    ticks = list(mi_scores.index)
+
+    plt_figure(figsize=figsize, dpi=dpi)
+    sns_barplot(x=mi_scores, y=width, orient='horizontal')
+    plt_yticks(width, ticks)
+    plt_title("Mutual Information Scores")
+    
+    garbage_cleaner()
+
+###################################################################################################################
+
 
 
