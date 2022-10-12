@@ -25,22 +25,6 @@ Available functions:
     mutual_info: Plot mutual info of features with respect to the target.
     ______________________________________________________________
 '''
-
-
-
-############################################
-def garbage_cleaner():
-    '''
-    clears all variables in local namespace
-    '''
-    
-    keys=locals().keys()
-    del(keys)
-    
-    from gc import collect
-    collect()
-    del(collect)   
-############################################
     
     
 
@@ -55,10 +39,10 @@ def five_point_summary(df, columns='all_the_columns'):
     
     Parameters :
     ------------
-        df: 
+        df : 
             a pandas dataframe
         
-        columns: default('all_the_columns') 
+        columns : default('all_the_columns') 
             list of column names.
             (if list of columns is not passed then
             all columns are analysed)
@@ -85,7 +69,11 @@ def five_point_summary(df, columns='all_the_columns'):
         print(df[[column]].describe().iloc[3:] )
         print('---------------------------------')
     
-    garbage_cleaner()
+    
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)   
     
 #############################################################################################
 
@@ -97,15 +85,15 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
     
     Parameters :
     ------------
-        df: 
+        df : 
             a pandas dataframe
         
-        columns: default('all_the_columns') 
+        columns : default('all_the_columns') 
             list of column names.
             (if list of columns is not passed then
             all columns are analysed)
                  
-        mode: {'print': 'only prints outliers',
+        mode : {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
               
@@ -176,7 +164,11 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
 
             print('---------------------------------')
             
-    garbage_cleaner()
+            
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)   
     
 #############################################################################################
 
@@ -188,13 +180,13 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
     
     Parameters :
     ------------
-        df: a pandas dataframe
+        df : a pandas dataframe
         
-        columns: default('all_the_columns') list of column names.
+        columns : default('all_the_columns') list of column names.
                  (if list of columns is not passed then
                  all columns are analysed)
                  
-        mode: {'print': 'only prints outliers',
+        mode : {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
               }
               
@@ -260,7 +252,11 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
 
             print('---------------------------------')
     
-    garbage_cleaner()
+    
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
     
 ####################################################################################
 
@@ -274,15 +270,15 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
     
     Parameters :
     ------------
-        df: a pandas dataframe
+        df : a pandas dataframe
         
-        columns: default('all_the_columns') list of column names.
+        columns : default('all_the_columns') list of column names.
                  (if list of columns is not passed then
                  all columns are analysed)
                  
-        figsize: default(20,7) set figure size
+        figsize : default(20,7) set figure size
         
-        dpi: default(120) set figure dpi
+        dpi : default(120) set figure dpi
         
     ________________________________
     Returns : 
@@ -333,7 +329,11 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
         plt_show()
         print('___________________________________________________________________________________________________________')
      
-    garbage_cleaner()
+
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
     
 ##############################################################################################################
 
@@ -347,17 +347,17 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
     
     Parameters :
     ------------
-        df: a pandas dataframe
+        df : a pandas dataframe
         
-        columns: default('all_the_columns') list of column names.
+        columns : default('all_the_columns') list of column names.
                  (if list of columns is not passed then
                  all columns are analysed)
                  
-        figsize: default(20,7) set figure size
+        figsize : default(20,7) set figure size
         
-        dpi: default(120) set figure dpi
+        dpi : default(120) set figure dpi
     
-        force: default(False) whether to proceed with a feature that
+        force : default(False) whether to proceed with a feature that
                might be numerical( !!!MAY CAUSE MEMORY LEAK!!! )
                
     ________________________________
@@ -412,7 +412,11 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         plt_show()
         print('_____________________________________________________________________________________________________________________')
      
-    garbage_cleaner()
+
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
     
 ######################################################################################################
 
@@ -426,18 +430,18 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
 
     Parameters :
     ------------
-        df: a pandas dataframe
+        df : a pandas dataframe
         
-        columns: list of column names from which outliers are to be
+        columns : list of column names from which outliers are to be
                  handled
                  
-        using: {'Z': Z score,
+        using : {'Z': Z score,
                 'IQR': Inter quartile range
                 'custom' : Provide custom lower and upper limits
                            Only works if single column passed
                 }
                 
-        action: {'compress': compresses the outliers to the extreme 
+        action : {'compress': compresses the outliers to the extreme 
                              values using the chosen method
                  'remove': removes the outliers using the chosen method
                 }
@@ -523,8 +527,11 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
 
         print('_____________________________________________________________________________________________________________________')
 
-    garbage_cleaner()
 
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
 
 ###################################################################################################
 '''                                       BIVARIATE ANALYSIS                                    '''
@@ -545,7 +552,7 @@ def correlation(df, figsize=(15,10), dpi=100):
         figsize : default(15,10)
             set figure size
 
-        dpi: default(100)
+        dpi : default(100)
             set figure dpi
         
     ________________________________
@@ -571,7 +578,11 @@ def correlation(df, figsize=(15,10), dpi=100):
 
     plt_show()
     
-    garbage_cleaner()
+
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
     
 ###################################################################################################
 
@@ -618,10 +629,10 @@ def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_col
     '''
     
     from seaborn import PairGrid as sns_pairgrid, histplot as sns_histplot, despine as sns_despine, regplot as sns_regplot
-    from matplotlib.pyplot import gca as plt_gca, scatter as  plt_scatter, Normalize as plt_normalize, get_cmap as plt_get_cmap, show as plt_show
+    from matplotlib.pyplot import gca as plt_gca, Normalize as plt_normalize, get_cmap as plt_get_cmap, show as plt_show
     from scipy.stats import pearsonr 
-    import matplotlib.style as style
-    style.use("default")
+    import matplotlib.style as mpl_style
+    mpl_style.use("default")
 
     def corrfunc(x, y, **kwds):
         cmap = kwds['cmap']
@@ -638,25 +649,35 @@ def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_col
 
 
     g = sns_pairgrid(df, height=height, aspect=aspect)
-    #g.map_lower(plt_scatter, s=1)
+    # regression plot
     g.map_lower(sns_regplot, ci=0, scatter_kws={'s':point_size, 'alpha':alpha, 'color':point_color}, line_kws={'linewidth':line_width, 'color':line_color})
+    # histplot
     g.map_diag(sns_histplot, kde=False)
+    # correlation heatmap
     g.map_upper(corrfunc, norm=plt_normalize(vmin=-.5, vmax=.5), cmap=plt_get_cmap('RdBu'))
-    g.fig.subplots_adjust(wspace=0.06, hspace=0.06) # equal spacing in both directions
+    
+    # equal spacing in both directions
+    g.fig.subplots_adjust(wspace=0.06, hspace=0.06) 
+    
     g.fig.dpi=dpi
     plt_show()
 
-    style.use("seaborn-darkgrid")
+    mpl_style.use("seaborn-darkgrid")
         
-    garbage_cleaner()
+
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
     
 ###################################################################################################################
 
 
 
-def mutual_info(df, target, limit=10, figsize=(5, 3), dpi=150):
+def mutual_info(df, target, n_neighbors=5, limit=10, figsize=(15, 4), dpi=150):
     '''
     Plot mutual info of features with respect to the target.
+    Top ten by default.
     
     Parameters :
     ------------
@@ -666,18 +687,29 @@ def mutual_info(df, target, limit=10, figsize=(5, 3), dpi=150):
     target : Default(None)
         name of target column
     
+    n_neighbors : Default(5)
+        Number of neighbors to use for MI estimation for continuous variables.
+        Higher values reduce variance of the estimation,
+        but could introduce a bias.
+    
     limit : Default(10)
         limit number of features plotted
+        Give argument as "-1" to plot all features
+        
+    figsize : default(15,10)
+        set figure size
+
+    dpi : default(100)
+        set figure dpi
     ________________________________
     Returns :
     ---------
         None
     '''
     
-    from numpy import arange as np_arange
     from pandas import Series as pd_series
     from seaborn import barplot as sns_barplot
-    from matplotlib.pyplot import figure as plt_figure, yticks as plt_yticks, title as plt_title
+    from matplotlib.pyplot import title as plt_title, bar_label as plt_bar_label, subplots as plt_subplots, show as plt_show
     from sklearn.feature_selection import mutual_info_regression
 
 
@@ -691,20 +723,29 @@ def mutual_info(df, target, limit=10, figsize=(5, 3), dpi=150):
     # All discrete features should now have integer dtypes (double-check this before using MI!)
     discrete_features = X.dtypes == int
 
-    mi_scores = mutual_info_regression(X, y, discrete_features=discrete_features)
+    mi_scores = mutual_info_regression(X, y, discrete_features=discrete_features, n_neighbors=n_neighbors)
     mi_scores = pd_series(mi_scores, name="MI Scores", index=X.columns)
-    mi_scores = mi_scores.sort_values(ascending=False)[:limit]
-
-    width = np_arange(len(mi_scores))
-    ticks = list(mi_scores.index)
-
-    plt_figure(figsize=figsize, dpi=dpi)
-    sns_barplot(x=mi_scores, y=width, orient='horizontal')
-    plt_yticks(width, ticks)
-    plt_title("Mutual Information Scores")
     
-    garbage_cleaner()
+    # sort mi scores
+    mi_scores = mi_scores.sort_values(ascending=False)
+    
+    if limit != -1:
+        mi_scores = mi_scores[:limit]
 
+    fig, ax= plt_subplots(figsize=figsize, dpi=dpi)
+    
+    sns_barplot(x=mi_scores, y=mi_scores.index, orient='horizontal', ax=ax, alpha=0.8)
+    
+    plt_bar_label(ax.containers[-1], fmt='%.3f', label_type='edge')
+    plt_title("Mutual Information Scores")
+    plt_show()
+    
+
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
+    
 ###################################################################################################################
 
 
