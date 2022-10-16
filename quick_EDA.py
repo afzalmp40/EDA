@@ -182,9 +182,10 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
     ------------
         df : a pandas dataframe
         
-        columns : default('all_the_columns') list of column names.
-                 (if list of columns is not passed then
-                 all columns are analysed)
+        columns : default('all_the_columns') 
+            list of column names.
+            (if list of columns is not passed then
+            all columns are analysed)
                  
         mode : {'print': 'only prints outliers',
                'return': 'returns outliers dataframe' 
@@ -262,7 +263,7 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
 
 
 
-def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
+def analysis_quant(df, columns='all_the_columns', bins=50, figsize=(20,2), dpi=120):
     '''
     Analyse quantative features.
     Prints five point summary and outliers via Z score and IQR. 
@@ -272,13 +273,19 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
     ------------
         df : a pandas dataframe
         
-        columns : default('all_the_columns') list of column names.
-                 (if list of columns is not passed then
-                 all columns are analysed)
-                 
-        figsize : default(20,7) set figure size
+        columns : default('all_the_columns') 
+            list of column names.
+            (if list of columns is not passed then
+            all columns are analysed)
         
-        dpi : default(120) set figure dpi
+        bins : default(50)
+            number of bins in histogram
+                 
+        figsize : default(20,7) 
+            set figure size
+        
+        dpi : default(120) 
+            set figure dpi
         
     ________________________________
     Returns : 
@@ -324,7 +331,7 @@ def analysis_quant(df, columns='all_the_columns', figsize=(20,2), dpi=120):
         # boxplot
         sns_boxplot(ax=axes[0] , x=feature)  
         # histogram
-        sns_histplot(ax=axes[1], data=feature, bins=50)    
+        sns_histplot(ax=axes[1], data=feature, bins=bins)    
 
         plt_show()
         print('___________________________________________________________________________________________________________')
@@ -349,9 +356,10 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
     ------------
         df : a pandas dataframe
         
-        columns : default('all_the_columns') list of column names.
-                 (if list of columns is not passed then
-                 all columns are analysed)
+        columns : default('all_the_columns') 
+            list of column names.
+            (if list of columns is not passed then
+            all columns are analysed)
                  
         figsize : default(20,7) set figure size
         
@@ -430,10 +438,12 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
 
     Parameters :
     ------------
-        df : a pandas dataframe
+        df : Default(None)
+            a pandas dataframe
         
-        columns : list of column names from which outliers are to be
-                 handled
+        columns : Default(None)
+            list of column names from which outliers
+            are to be handled
                  
         using : {'Z': Z score,
                 'IQR': Inter quartile range
@@ -588,7 +598,7 @@ def correlation(df, figsize=(15,10), dpi=100):
 
 
 
-def multiplot(df, line_width=1, line_color='darkblue', point_size=0.5, point_color='darkcyan', alpha=0.5, height=1, dpi=150, aspect=1.5 ):    
+def multiplot(df, line_width=1, line_color='red', point_size=0.5, point_color='darkcyan', alpha=0.5, height=1, dpi=150, aspect=1.5 ):    
     '''
     plot multiple plots like correlation(pearson) heatmap, pairwise scatterplot 
     and histogram in a single plot
@@ -681,26 +691,26 @@ def mutual_info(df, target, n_neighbors=5, limit=10, figsize=(15, 4), dpi=150):
     
     Parameters :
     ------------
-    df : Default(None)
-        pandas dataframe
-    
-    target : Default(None)
-        name of target column
-    
-    n_neighbors : Default(5)
-        Number of neighbors to use for MI estimation for continuous variables.
-        Higher values reduce variance of the estimation,
-        but could introduce a bias.
-    
-    limit : Default(10)
-        limit number of features plotted
-        Give argument as "-1" to plot all features
-        
-    figsize : default(15,10)
-        set figure size
+        df : Default(None)
+            pandas dataframe
 
-    dpi : default(100)
-        set figure dpi
+        target : Default(None)
+            name of target column
+
+        n_neighbors : Default(5)
+            Number of neighbors to use for MI estimation for continuous variables.
+            Higher values reduce variance of the estimation,
+            but could introduce a bias.
+
+        limit : Default(10)
+            limit number of features plotted
+            Give argument as "-1" to plot all features
+
+        figsize : default(15,10)
+            set figure size
+
+        dpi : default(100)
+            set figure dpi
     ________________________________
     Returns :
     ---------
