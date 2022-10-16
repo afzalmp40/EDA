@@ -293,7 +293,7 @@ def analysis_quant(df, columns='all_the_columns', bins=50, figsize=(20,2), dpi=1
         None
     '''
 
-    from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
+    from matplotlib.pyplot import subplots as plt_subplots, show as plt_show, suptitle as plt_suptitle
     from seaborn import histplot as sns_histplot, boxplot as sns_boxplot
 
     # converting singular value of str to list 
@@ -331,7 +331,9 @@ def analysis_quant(df, columns='all_the_columns', bins=50, figsize=(20,2), dpi=1
         # boxplot
         sns_boxplot(ax=axes[0] , x=feature)  
         # histogram
-        sns_histplot(ax=axes[1], data=feature, bins=bins)    
+        sns_histplot(ax=axes[1], data=feature, bins=bins)
+        
+        plt_suptitle(f'Plots for {column}', fontweight='bold', y=1.03)
 
         plt_show()
         print('___________________________________________________________________________________________________________')
@@ -374,7 +376,7 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         None 
     '''
     
-    from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
+    from matplotlib.pyplot import subplots as plt_subplots, show as plt_show, suptitle as plt_suptitle 
     from seaborn import barplot as sns_barplot
 
     # converting singular value of str to list 
@@ -416,6 +418,8 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
         axes[0].set_ylabel('count')
         # pie chart
         axes[1].pie(x=values, labels=values.index )
+        
+        plt_suptitle(f'Plots for {column}', fontweight='bold', y=1.03)
 
         plt_show()
         print('_____________________________________________________________________________________________________________________')
@@ -528,11 +532,11 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
 
         #before.hist(bins=50, ax=ax[0])
         sns_histplot(ax=ax[0], data=before, bins=50) 
-        ax[0].set_title(f'{column} before')
+        ax[0].set_title(f'{column} before', y=1.03)
 
         #after.hist(bins=50, ax=ax[1])
         sns_histplot(ax=ax[1], data=after, bins=50) 
-        ax[1].set_title(f'{column} after')
+        ax[1].set_title(f'{column} after', y=1.03)
         plt_show()
 
         print('_____________________________________________________________________________________________________________________')
@@ -578,12 +582,12 @@ def correlation(df, figsize=(15,10), dpi=100):
 
     # plotting pearson correlation heatmap
     pearson=df.corr()
-    ax[0].set_title('pearson')
+    ax[0].set_title('pearson', fontweight='bold', y=1.03)
     sns_heatmap(pearson, cmap='RdBu', square=True, annot=True, fmt='.2f', vmin=-1, vmax=1, ax=ax[0])
 
     # plotting spearman correlation heatmap
     spearman=df.corr(method='spearman')
-    ax[1].set_title('spearman')
+    ax[1].set_title('spearman', fontweight='bold', y=1.03)
     sns_heatmap(spearman, cmap='RdBu', square=True, annot=True, fmt='.2f', vmin=-1, vmax=1, ax=ax[1])
 
     plt_show()
@@ -747,7 +751,7 @@ def mutual_info(df, target, n_neighbors=5, limit=10, figsize=(15, 4), dpi=150):
     sns_barplot(x=mi_scores, y=mi_scores.index, orient='horizontal', ax=ax, alpha=0.8)
     
     plt_bar_label(ax.containers[-1], fmt='%.3f', label_type='edge')
-    plt_title("Mutual Information Scores")
+    plt_title("Mutual Information Scores", fontweight='bold', y=1.03)
     plt_show()
     
 
