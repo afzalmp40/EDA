@@ -8,21 +8,31 @@ Available functions:
 
     UNIVARIATE ANALYSIS:
     --------------------
-    five_point_summary: Prints five point summary of a feature.
-    outliers_z_score: Analyse outliers using Z score.
-    outliers_IQR: Analyse outliers using IQR.
-    analysis_quant: Analyse quantative features.
-    analysis_cate: Analyse categorical features.
-    handle_outliers: Handle outliers.
+    - five_point_summary: Prints five point summary of a feature.
+    
+    - outliers_z_score: Analyse outliers using Z score.
+    
+    - outliers_IQR: Analyse outliers using IQR.
+    
+    - analysis_quant: Analyse quantative features.
+    
+    - analysis_cate: Analyse categorical features.
+    
+    - handle_outliers: Handle outliers.
+    
+    - iqr_impute: Impute a given value in a column with random
+                values from the IQR
     ______________________________________________________________
     
 
     BIVARIATE ANALYSIS:
     -------------------
-    correlation: Plot correlation heatmap for a dataframe.
-    multiplot: Plot multiple plots like correlation heatmap,
+    - correlation: Plot correlation heatmap for a dataframe.
+    
+    - multiplot: Plot multiple plots like correlation heatmap,
                pairwise scatterplot and histogram in single plot.
-    mutual_info: Plot mutual info of features with respect to the target.
+               
+    - mutual_info: Plot mutual info of features with respect to the target.
     ______________________________________________________________
 '''
     
@@ -35,22 +45,22 @@ Available functions:
 
 def five_point_summary(df, columns='all_the_columns'):
     '''
-    Prints five point summary of a feature.
-    
-    Parameters :
-    ------------
-        df : 
-            a pandas dataframe
-        
-        columns : default('all_the_columns') 
-            list of column names.
-            (if list of columns is not passed then
-            all columns are analysed)
-            
-    ________________________________
-    Returns : 
-    ---------
-        None 
+Prints five point summary of a feature.
+
+Parameters :
+------------
+    df : 
+        a pandas dataframe
+
+    columns : default('all_the_columns') 
+        list of column names.
+        (if list of columns is not passed then
+        all columns are analysed)
+
+________________________________
+Returns : 
+---------
+    None 
     '''
 
     # converting singular value of str to list 
@@ -81,28 +91,28 @@ def five_point_summary(df, columns='all_the_columns'):
 
 def outliers_z_score(df, columns='all_the_columns', mode='print'):
     '''
-    Analyse outliers using Z score.
-    
-    Parameters :
-    ------------
-        df : 
-            a pandas dataframe
-        
-        columns : default('all_the_columns') 
-            list of column names.
-            (if list of columns is not passed then
-            all columns are analysed)
-                 
-        mode : {'print': 'only prints outliers',
-               'return': 'returns outliers dataframe' 
-              }
-              
-    ________________________________
-    Returns : 
-    ---------
-        mode='return' ==> ('upper', 'lower', 'outliers_with_z')
-        
-        mode='print' ==> None
+Analyse outliers using Z score.
+
+Parameters :
+------------
+    df : 
+        a pandas dataframe
+
+    columns : default('all_the_columns') 
+        list of column names.
+        (if list of columns is not passed then
+        all columns are analysed)
+
+    mode : {'print': 'only prints outliers',
+           'return': 'returns outliers dataframe' 
+          }
+
+________________________________
+Returns : 
+---------
+    mode='return' ==> ('upper', 'lower', 'outliers_with_z')
+
+    mode='print' ==> None
     '''
     
     from numpy import mean as np_mean ,std as np_std
@@ -176,26 +186,26 @@ def outliers_z_score(df, columns='all_the_columns', mode='print'):
 
 def outliers_IQR(df, columns='all_the_columns', mode='print'):
     '''
-    Analyse outliers using IQR.
-    
-    Parameters :
-    ------------
-        df : a pandas dataframe
-        
-        columns : default('all_the_columns') 
-            list of column names.
-            (if list of columns is not passed then
-            all columns are analysed)
-                 
-        mode : {'print': 'only prints outliers',
-               'return': 'returns outliers dataframe' 
-              }
-              
-    ________________________________
-    Returns : 
-    ---------
-        mode='return' ==> ('upper', 'lower', 'outliers_with_IQR') 
-        mode='print' ==> None 
+Analyse outliers using IQR.
+
+Parameters :
+------------
+    df : a pandas dataframe
+
+    columns : default('all_the_columns') 
+        list of column names.
+        (if list of columns is not passed then
+        all columns are analysed)
+
+    mode : {'print': 'only prints outliers',
+           'return': 'returns outliers dataframe' 
+          }
+
+________________________________
+Returns : 
+---------
+    mode='return' ==> ('upper', 'lower', 'outliers_with_IQR') 
+    mode='print' ==> None 
     ''' 
     
     from pandas import DataFrame as pd_DataFrame
@@ -265,32 +275,32 @@ def outliers_IQR(df, columns='all_the_columns', mode='print'):
 
 def analysis_quant(df, columns='all_the_columns', bins=50, figsize=(20,2), dpi=120):
     '''
-    Analyse quantative features.
-    Prints five point summary and outliers via Z score and IQR. 
-    Plots boxplot and histogram to visualise outliers.
-    
-    Parameters :
-    ------------
-        df : a pandas dataframe
-        
-        columns : default('all_the_columns') 
-            list of column names.
-            (if list of columns is not passed then
-            all columns are analysed)
-        
-        bins : default(50)
-            number of bins in histogram
-                 
-        figsize : default(20,7) 
-            set figure size
-        
-        dpi : default(120) 
-            set figure dpi
-        
-    ________________________________
-    Returns : 
-    ---------
-        None
+Analyse quantative features.
+Prints five point summary and outliers via Z score and IQR. 
+Plots boxplot and histogram to visualise outliers.
+
+Parameters :
+------------
+    df : a pandas dataframe
+
+    columns : default('all_the_columns') 
+        list of column names.
+        (if list of columns is not passed then
+        all columns are analysed)
+
+    bins : default(50)
+        number of bins in histogram
+
+    figsize : default(20,7) 
+        set figure size
+
+    dpi : default(120) 
+        set figure dpi
+
+________________________________
+Returns : 
+---------
+    None
     '''
 
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show, suptitle as plt_suptitle
@@ -350,30 +360,30 @@ def analysis_quant(df, columns='all_the_columns', bins=50, figsize=(20,2), dpi=1
 
 def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=False):    
     '''
-    Analyse categorical features.
-    Prints unique values and their counts. 
-    Plots barplot and pie chart.
-    
-    Parameters :
-    ------------
-        df : a pandas dataframe
-        
-        columns : default('all_the_columns') 
-            list of column names.
-            (if list of columns is not passed then
-            all columns are analysed)
-                 
-        figsize : default(20,7) set figure size
-        
-        dpi : default(120) set figure dpi
-    
-        force : default(False) whether to proceed with a feature that
-               might be numerical( !!!MAY CAUSE MEMORY LEAK!!! )
-               
-    ________________________________
-    Returns : 
-    ---------
-        None 
+Analyse categorical features.
+Prints unique values and their counts. 
+Plots barplot and pie chart.
+
+Parameters :
+------------
+    df : a pandas dataframe
+
+    columns : default('all_the_columns') 
+        list of column names.
+        (if list of columns is not passed then
+        all columns are analysed)
+
+    figsize : default(20,7) set figure size
+
+    dpi : default(120) set figure dpi
+
+    force : default(False) whether to proceed with a feature that
+           might be numerical( !!!MAY CAUSE MEMORY LEAK!!! )
+
+________________________________
+Returns : 
+---------
+    None 
     '''
     
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show, suptitle as plt_suptitle 
@@ -436,40 +446,40 @@ def analysis_cate(df, columns='all_the_columns', figsize=(12,3), dpi=120, force=
 
 def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=(None,None)):
     '''
-    Handle outliers.
-    Remove or compress outliers from dataframe(inplace) by using
-    either Z score or IQR. Prints the removed/compressed values.
+Handle outliers.
+Remove or compress outliers from dataframe(inplace) by using
+either Z score or IQR. Prints the removed/compressed values.
 
-    Parameters :
-    ------------
-        df : Default(None)
-            a pandas dataframe
-        
-        columns : Default(None)
-            list of column names from which outliers
-            are to be handled
-                 
-        using : {'Z': Z score,
-                'IQR': Inter quartile range
-                'custom' : Provide custom lower and upper limits
-                           Only works if single column passed
-                }
-                
-        action : {'compress': compresses the outliers to the extreme 
-                             values using the chosen method
-                 'remove': removes the outliers using the chosen method
-                }
-        
-        custom_intervals : default( (None,None) )
-            Supply this when using="custom" 
-            Intervals using which outliers will be handled
-            Provide custom intervals as a tuple in the format:
-            (lower limit, upper limit)
-            
-    ________________________________
-    Returns : 
-    ---------
-        None
+Parameters :
+------------
+    df : Default(None)
+        a pandas dataframe
+
+    columns : Default(None)
+        list of column names from which outliers
+        are to be handled
+
+    using : {'Z': Z score,
+            'IQR': Inter quartile range
+            'custom' : Provide custom lower and upper limits
+                       Only works if single column passed
+            }
+
+    action : {'compress': compresses the outliers to the extreme 
+                         values using the chosen method
+             'remove': removes the outliers using the chosen method
+            }
+
+    custom_intervals : default( (None,None) )
+        Supply this when using="custom" 
+        Intervals using which outliers will be handled
+        Provide custom intervals as a tuple in the format:
+        (lower limit, upper limit)
+
+________________________________
+Returns : 
+---------
+    None
     '''
     
     from pandas import DataFrame as pd_DataFrame, concat as pd_concat
@@ -527,14 +537,14 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
             print(outliers)
 
         after=df[column]
+        
+        #PLOTTING
         # plot the difference after handling outliers
         fig,ax=plt_subplots(1,2, figsize=(20,3), dpi=100)
 
-        #before.hist(bins=50, ax=ax[0])
         sns_histplot(ax=ax[0], data=before, bins=50) 
         ax[0].set_title(f'{column} before', y=1.03)
 
-        #after.hist(bins=50, ax=ax[1])
         sns_histplot(ax=ax[1], data=after, bins=50) 
         ax[1].set_title(f'{column} after', y=1.03)
         plt_show()
@@ -548,6 +558,72 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
     del(collect)
 
 ###################################################################################################
+
+
+
+def iqr_impute(df, column_value):    
+    '''
+Impute a given value in a column with random values from the IQR
+
+Parameters:
+-----------
+    df : Default(None)
+        A pandas dataframe
+
+    column_value : Default(None)
+        a dictionary comprising of keys as column name
+        and values as the value to be replaced
+_____________________
+Returns :
+---------
+    None
+    '''
+    
+    from numpy.random import random as np_random_random
+    from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
+    from seaborn import histplot as sns_histplot
+    
+    for column in column_value:
+        before=df[column].copy()
+
+        # extracting the values to be replaced as a series
+        values = df[column][ df[column] == column_value[column] ]
+
+        # setting upper and lower limit for imputing as quartile3 and quartile1
+        lower,upper = df[column].describe()[[4,6]]
+
+        # replacing values in the replacement series as random values from the IQR
+        values[:] =  lower + (upper-lower)*np_random_random(values.shape[0])
+        
+        # updating above values in original dataframe with respect to index
+        df[column].update( values )
+        
+        after=df[column]
+        
+        #PLOTTING
+        # plot the difference after imputing 
+        fig,ax=plt_subplots(1,2, figsize=(20,3), dpi=100)
+
+        sns_histplot(ax=ax[0], data=before, bins=50) 
+        ax[0].set_title(f'{column} before', y=1.03)
+
+        sns_histplot(ax=ax[1], data=after, bins=50) 
+        ax[1].set_title(f'{column} after', y=1.03)
+        plt_show()
+
+        print('_____________________________________________________________________________________________________________________')
+
+        
+    locals().clear()
+    from gc import collect
+    collect()
+    del(collect)
+    
+###################################################################################################
+    
+    
+
+###################################################################################################
 '''                                       BIVARIATE ANALYSIS                                    '''
 ###################################################################################################
 
@@ -555,24 +631,24 @@ def handle_outliers(df, columns, using='Z', action='compress', custom_intervals=
 
 def correlation(df, figsize=(15,10), dpi=100):
     '''
-    Plot correlation heatmap for a dataframe.
-    Includes both pearson and spearman correlation.
-    
-    Parameters :
-    ------------
-        df : Default(None)
-            a pandas dataframe
+Plot correlation heatmap for a dataframe.
+Includes both pearson and spearman correlation.
 
-        figsize : default(15,10)
-            set figure size
+Parameters :
+------------
+    df : Default(None)
+        a pandas dataframe
 
-        dpi : default(100)
-            set figure dpi
-        
-    ________________________________
-    Returns :
-    ---------
-        None 
+    figsize : default(15,10)
+        set figure size
+
+    dpi : default(100)
+        set figure dpi
+
+________________________________
+Returns :
+---------
+    None 
     '''
     
     from matplotlib.pyplot import subplots as plt_subplots, show as plt_show
@@ -604,42 +680,42 @@ def correlation(df, figsize=(15,10), dpi=100):
 
 def multiplot(df, line_width=1, line_color='red', point_size=0.5, point_color='darkcyan', alpha=0.5, height=1, dpi=150, aspect=1.5 ):    
     '''
-    plot multiple plots like correlation(pearson) heatmap, pairwise scatterplot 
-    and histogram in a single plot
-    
-    Parameters :
-    ------------
-        df : Default(None)
-            a pandas dataframe
+plot multiple plots like correlation(pearson) heatmap, pairwise scatterplot 
+and histogram in a single plot
 
-        linewidth : default(2)
-            width of regression line
+Parameters :
+------------
+    df : Default(None)
+        a pandas dataframe
 
-        line_color : default('blue')
-            color of regression line
+    linewidth : default(2)
+        width of regression line
 
-        point_size : default(0.5)
-            size of scatter points
+    line_color : default('blue')
+        color of regression line
 
-        point_color : default('darkcyan')
-            color of scatter points
+    point_size : default(0.5)
+        size of scatter points
 
-        alpha : default(0.5)
-            transparency value for scatter points
+    point_color : default('darkcyan')
+        color of scatter points
 
-        height : default(1)
-            Height of figure
+    alpha : default(0.5)
+        transparency value for scatter points
 
-        dpi : default(100)
-            dpi of figure
+    height : default(1)
+        Height of figure
 
-        aspect : default(1.5)
-            aspect ratio of figure
-        
-    ________________________________
-    Returns :
-    ---------
-        None
+    dpi : default(100)
+        dpi of figure
+
+    aspect : default(1.5)
+        aspect ratio of figure
+
+________________________________
+Returns :
+---------
+    None
     '''
     
     from seaborn import PairGrid as sns_pairgrid, histplot as sns_histplot, despine as sns_despine, regplot as sns_regplot
@@ -658,8 +734,8 @@ def multiplot(df, line_width=1, line_color='red', point_size=0.5, point_color='d
         facecolor = cmap(norm(r))
         ax.set_facecolor(facecolor)
         lightness = (max(facecolor[:3]) + min(facecolor[:3]) ) / 2
-        ax.annotate(f"r={r:.2f}", xy=(.5, .5), xycoords=ax.transAxes,
-                    color='white' if lightness < 0.7 else 'black', size=10, ha='center', va='center')
+        ax.annotate(f"r={r:.2f}", xy=(.5, .5), xycoords=ax.transAxes, size=10, ha='center', va='center',
+                    color='white' if lightness < 0.7 else 'black' )
 
 
     g = sns_pairgrid(df, height=height, aspect=aspect)
@@ -690,35 +766,35 @@ def multiplot(df, line_width=1, line_color='red', point_size=0.5, point_color='d
 
 def mutual_info(df, target, n_neighbors=5, limit=10, figsize=(15, 4), dpi=150):
     '''
-    Plot mutual info of features with respect to the target.
-    Top ten by default.
-    
-    Parameters :
-    ------------
-        df : Default(None)
-            pandas dataframe
+Plot mutual info of features with respect to the target.
+Top ten by default.
 
-        target : Default(None)
-            name of target column
+Parameters :
+------------
+    df : Default(None)
+        pandas dataframe
 
-        n_neighbors : Default(5)
-            Number of neighbors to use for MI estimation for continuous variables.
-            Higher values reduce variance of the estimation,
-            but could introduce a bias.
+    target : Default(None)
+        name of target column
 
-        limit : Default(10)
-            limit number of features plotted
-            Give argument as "-1" to plot all features
+    n_neighbors : Default(5)
+        Number of neighbors to use for MI estimation for continuous variables.
+        Higher values reduce variance of the estimation,
+        but could introduce a bias.
 
-        figsize : default(15,10)
-            set figure size
+    limit : Default(10)
+        limit number of features plotted
+        Give argument as "-1" to plot all features
 
-        dpi : default(100)
-            set figure dpi
-    ________________________________
-    Returns :
-    ---------
-        None
+    figsize : default(15,10)
+        set figure size
+
+    dpi : default(100)
+        set figure dpi
+________________________________
+Returns :
+---------
+    None
     '''
     
     from pandas import Series as pd_series
